@@ -6,7 +6,7 @@
     internal class PluginInfo
     {
         public const string GUID = "com.robfin.gorillatag.greenscreen";
-        public const string Name = "MonkeyHead";
-        public const string Version = "1.0.0";
+        public const string Name = "GreenScreenMod";
+        public const string Version = "1.1.0";
     }
 }
