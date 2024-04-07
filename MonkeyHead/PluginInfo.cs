@@ -1,4 +1,4 @@
-﻿namespace MonkeyHead
+namespace MonkeyHead
 {
     /// <summary>
     /// This class is used to provide information about your mod to BepInEx.
@@ -7,6 +7,6 @@
     {
         public const string GUID = "com.robfin.gorillatag.greenscreen";
         public const string Name = "GreenScreenMod";
-        public const string Version = "1.1.0";
+        public const string Version = "1.2.0";
     }
 }
