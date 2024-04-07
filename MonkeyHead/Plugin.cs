@@ -1,5 +1,6 @@
 using BepInEx;
 using GorillaExtensions;
+using Photon.Voice;
 using System;
 using System.IO;
 using System.Reflection;
@@ -15,7 +16,7 @@ namespace MonkeyHead
     {
         public static bool thingEnabled = true;
 
-        static GameObject thing;
+        static GameObject greenscreen;
 
         GameObject Blue,
                    Green,
@@ -25,40 +26,23 @@ namespace MonkeyHead
 
         GameObject pizza;
 
+        GameObject table;
+
         void Start() => Events.GameInitialized += OnGameInitialized;
 
         public static void ChangeColour(Color colour)
         {
-            thing.transform.GetChild(0).GetComponent<Renderer>().material.color = colour;
-            thing.transform.GetChild(1).GetComponent<Renderer>().material.color = colour;
-            thing.transform.GetChild(2).GetComponent<Renderer>().material.color = colour;
+            greenscreen.transform.GetChild(0).GetComponent<Renderer>().material.color = colour;
+            greenscreen.transform.GetChild(1).GetComponent<Renderer>().material.color = colour;
+            greenscreen.transform.GetChild(2).GetComponent<Renderer>().material.color = colour;
+            greenscreen.transform.GetChild(3).GetComponent<Renderer>().material.color = colour;
         }
 
-        void Update()
-        {
-            thing.SetActive(thingEnabled);
-            pizza.GetComponent<Renderer>().enabled = !thingEnabled;
-        }
-
-        GameObject CreateButan(Color color, String name, float x, float z)
+        GameObject CreateButan(Color color, String name, float x, float y, float z)
         {
             GameObject temp = GameObject.CreatePrimitive(PrimitiveType.Cube);
             temp.GetComponent<Renderer>().material.shader = Shader.Find("GorillaTag/UberShader");
-            temp.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-            temp.transform.position = new Vector3(x, 16.8034f, z);
-            temp.transform.localRotation = Quaternion.Euler(0f, 30f, 0f);
-            temp.layer = 18;
-            temp.AddComponent<Butan>();
-            temp.GetComponent<Renderer>().material.color = color;
-            temp.name = name;
-            return temp;
-        }
-
-        GameObject CreateButan(Color color, String name, float x, float z, float y)
-        {
-            GameObject temp = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            temp.GetComponent<Renderer>().material.shader = Shader.Find("GorillaTag/UberShader");
-            temp.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+            temp.transform.localScale = new Vector3(0.13f, 0.1f, 0.13f);
             temp.transform.position = new Vector3(x, y, z);
             temp.transform.localRotation = Quaternion.Euler(0f, 30f, 0f);
             temp.layer = 18;
@@ -70,30 +54,40 @@ namespace MonkeyHead
 
         void OnGameInitialized(object sender, EventArgs e)
         {
-            var bundle = LoadAssetBundle("MonkeyHead.Assets.greenscreen");
-            thing = bundle.LoadAsset<GameObject>("greenscreen");
-            thing = GameObject.Instantiate(thing);
-            thing.transform.localPosition = new Vector3(-48.2222f, 14.5121f, -126.7394f);
-            thing.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
-            thing.transform.localRotation = Quaternion.Euler(0f, 210f, 0f);
 
-            Blue = CreateButan(Color.blue, "Blue", -56.3f, -120.2246f);
+            greenscreen = GameObject.Instantiate(LoadAssetBundle("MonkeyHead.Assets.greenscreen").LoadAsset<GameObject>("greenscreen"));
+            greenscreen.transform.localPosition = new Vector3(-48.1722f, 14.5121f, -126.4994f);
+            greenscreen.transform.localScale = new Vector3(0.4f, 0.4f, 0.34f);
+            greenscreen.transform.localRotation = Quaternion.Euler(0f, 210f, 0f);
 
-            Green = CreateButan(Color.green, "Green", -56, -120.4046f);
+            Blue = CreateButan(Color.blue, "Blue", -56.32f, 16.8134f, -120.7547f);
 
-            Red = CreateButan(Color.red, "Red", -55.7f, -120.5746f);
+            Green = CreateButan(Color.green, "Green", -56.11f, 16.8134f, -120.8746f);
 
-            Grey = CreateButan(Color.grey, "Grey", -55.4f, -120.7446f);
+            Red = CreateButan(Color.red, "Red", -55.9f, 16.8134f, -120.9946f);
 
-            Enable = CreateButan(Color.white, "Enable", -56.3013f, -120.2246f, 17.1534f);
+            Grey = CreateButan(Color.grey, "Grey", -55.69f, 16.8134f, -121.1246f);
+
+            Enable = CreateButan(Color.white, "Enable", -56.52f, 16.7734f, -120.6846f);
 
             pizza = GameObject.Find("Environment Objects/LocalObjects_Prefab/City/CosmeticsRoomAnchor/ShoppingCenterAnchor/Stuff/Empty Stuff/table (1)");
+
+            table = GameObject.Instantiate(LoadAssetBundle("MonkeyHead.Assets.table").LoadAsset<GameObject>("table"));
+            table.transform.localPosition = new Vector3(-55.9767f, 16.7594f, -120.7577f);
+            table.transform.localScale = new Vector3(0.3f, 0.4f, 0.3f);
+            table.transform.localRotation = Quaternion.Euler(0f, 120.1824f, 0f);
         }
 
         public AssetBundle LoadAssetBundle(string path)
         {
             Assembly.GetExecutingAssembly().GetManifestResourceStream(path).Close();
             return AssetBundle.LoadFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream(path));
+        }
+
+        void Update()
+        {
+            greenscreen.SetActive(thingEnabled);
+            pizza.GetComponent<Renderer>().enabled = !thingEnabled;
         }
     }
 }
