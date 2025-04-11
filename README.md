@@ -1,3 +1,5 @@
+# This project is dead! GorillaTag has added an official greenscreen!
+
 # GreenScreenMod
 A simple green screen mod.
 
